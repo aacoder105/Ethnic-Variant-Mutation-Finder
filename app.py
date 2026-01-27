@@ -125,7 +125,7 @@ def is_plof(node: Dict[str, Any], canonical_transcript_id: str = None) -> bool:
 def gather_population_ac_an(node: Dict[str, Any]) -> Dict[str, Dict[str, int]]:
     pop_ac = defaultdict(int)
     pop_an = defaultdict(int)
-    for block in ("joint", "genome", "exome"):
+    for block in ("joint",):
         blk = node.get(block)
         if not isinstance(blk, dict):
             continue
@@ -189,7 +189,7 @@ def process_gene(gene: str) -> List[Dict[str, Any]]:
         if len(pop_af_named) > 0:
             sorted_pops = sorted(pop_af_named.items(), key=lambda x: x[1], reverse=True)
             max_pop, max_af = sorted_pops[0]
-            if max_af > 0.00001:
+            if max_af > 0.00008:
                 if len(sorted_pops) == 1:
                     unique_pop = max_pop
                 elif len(sorted_pops) > 1:
