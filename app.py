@@ -121,6 +121,14 @@ def is_plof(node: Dict[str, Any], canonical_transcript_id: str = None) -> bool:
 
     return False
 
+def is_pathogenic(sig):
+    """Check if ClinVar says pathogenic/likely pathogenic"""
+    if not sig:
+        return False
+    s = str(sig).lower()
+    if "benign" in s or "conflicting" in s or "uncertain" in s:
+        return False
+    return "pathogenic" in s
 
 def gather_population_ac_an(node: Dict[str, Any]) -> Dict[str, Dict[str, int]]:
     pop_ac = defaultdict(int)
@@ -158,14 +166,18 @@ def process_gene(gene: str) -> List[Dict[str, Any]]:
     data = resp.get("data", {}) or {}
     gene_obj = data.get("gene") or {}
     canonical_transcript_id = gene_obj.get("canonical_transcript_id")
+    
+    clinvar_list = gene_obj.get("clinvar_variants") or []
+    clinvar_map = {c.get("variant_id"): c.get("clinical_significance") for c in clinvar_list}
 
     for var in gene_obj.get("variants") or []:
         vid = var.get("variant_id")
         if not vid:
             continue
-        
+
         plof_flag = is_plof(var, canonical_transcript_id)
-        if not plof_flag:
+        path_flag = is_pathogenic(clinvar_map.get(vid))
+        if not plof_flag and not path_flag:
             continue
 
         pop_map = gather_population_ac_an(var)
