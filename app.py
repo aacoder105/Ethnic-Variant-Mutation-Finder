@@ -40,6 +40,7 @@ POP_NAME_OVERRIDES = {
     "oth": "Other",
     "asj": "Ashkenazi Jewish",
     "mid": "Middle Eastern",
+    "ami": "Amish",
 }
 
 # GraphQL query
