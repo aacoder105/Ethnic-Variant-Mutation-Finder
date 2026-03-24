@@ -17,7 +17,7 @@ CORS(app)
 # ---------------- CONFIG ----------------
 API_URL = "https://gnomad.broadinstitute.org/api"
 REFERENCE_GENOME = "GRCh38"
-DATASET = "gnomad_r4.1"
+DATASET = "gnomad_r4"
 
 HEADERS = {"Content-Type": "application/json", "User-Agent": "GnomAD-Variant-Analyzer/1.0"}
 
